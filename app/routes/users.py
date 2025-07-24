@@ -17,7 +17,7 @@ users_route = APIRouter(prefix="/users",tags=["User"])
 
 async def get_user_id(token:Annotated[str,Depends(OAuth2PasswordBearer(tokenUrl="/users/token"))])->str:
     try:
-        payload:Dict = jwt.decode(token,settings.secret_key,algorithm=["HS256"])
+        payload:Dict = jwt.decode(token,settings.secret_key,algorithms=["HS256"])
         user_id = payload.get("sub")
         if not user_id:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)

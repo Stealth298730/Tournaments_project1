@@ -16,5 +16,5 @@ class Team(Base):
     users:Mapped[List["User"]] = relationship(secondary=UserTeamAssoc.__tablename__,back_populates="teams",lazy=("selectin"))
     tournaments:Mapped[List["Tournament"]] = relationship(secondary=Result.__tablename__,back_populates="teams",lazy=("selectin"))
     def __init__(self,**kwargs):
-        self.id == uuid4().hex
+        self.id = uuid4().hex
         super().__init__(**kwargs)
