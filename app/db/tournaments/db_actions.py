@@ -38,19 +38,26 @@ async def add_result_by_team(user_id:str,team_id:str,tournament_id:str,result:fl
     
     tournament_result:Result = await db.scalar(select(Result).filter_by(tournament=tournament,team=user_team_assoc.team))
     tournament_result.result += result
-    await db.commit
+    await db.commit()
     return True
 
 
-async def add_vote(user_id:str,tournament_id:str,team_id:str,vote:Vote,db:AsyncSession)->Optional[bool]:
-    user_team_assoc:Optional[UserTeamAssoc] = await db.scalar(select(UserTeamAssoc).filter_by(user_id=user_id,team_id=team_id))
-    result:Optional[Result] = await db.scalar(select(Result).filter_by(team=user_team_assoc.team,tournament_id=tournament_id))
-    if not user_team_assoc or not result:
+async def add_vote(user_id: str, tournament_id: str, team_id: str, vote: Vote, db: AsyncSession) -> Optional[bool]:
+    user_team_assoc: Optional[UserTeamAssoc] = await db.scalar(
+        select(UserTeamAssoc).filter_by(user_id=user_id, team_id=team_id)
+    )
+    if not user_team_assoc:
         return
-    
+    result: Optional[Result] = await db.scalar(
+        select(Result).filter_by(team_id=team_id, tournament_id=tournament_id)
+    )
+
+    if not result:
+        return
     result.vote_result += vote.value
     await db.commit()
     return True
+
 
 
 async def check_vote_result(user_id:str,tournament_id:str,team_id:str,db:AsyncSession)->Optional[bool]:

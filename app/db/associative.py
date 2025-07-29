@@ -26,7 +26,7 @@ class Result(Base):
     team_id = Column(String(100),ForeignKey("teams.id",ondelete="cascade",onupdate="cascade"),primary_key=True)
     tournament_id = Column(String(100),ForeignKey("tournaments.id",ondelete="cascade",onupdate="cascade"),primary_key=True)
     vote_result = Column(Integer())
-    resul=Column(Float())
+    result=Column(Float())
     team:Mapped["Team"] = relationship(lazy="selectin")
     tournament:Mapped["Tournament"] = relationship(lazy="selectin")
 
@@ -34,4 +34,4 @@ class Result(Base):
         self.id == uuid4().hex
         self.vote_result = 0
         self.result = 0
-        super().__init__(kwargs)
+        super().__init__(**kwargs)
