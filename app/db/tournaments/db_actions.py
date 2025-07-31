@@ -74,7 +74,8 @@ async def check_vote_result(user_id:str,tournament_id:str,team_id:str,db:AsyncSe
 
 
 async def get_results(tournament_id:str,db:AsyncSession)->List[Result]:
-    return await db.scalars(select(Result).filter(tournament_id=tournament_id))
+    return await db.scalars(select(Result).filter(Result.tournament_id == tournament_id))
+
 
 
 async def get_tournaments(db:AsyncSession):
